@@ -24,21 +24,21 @@ class App extends Component {
     };
   }
 
-  addMessage = (username, content) => {
+//listen connection with server
+  wSocket = new WebSocket("ws://localhost:3001");
+
+  addMessage = (content) => {
     const objNewChat = {
-      username,
-      content, 
+      username: this.state.currentUser.name,
+      content: content
     }; 
-    
-    const newMessages = { messages: [objNewChat, ...this.state.messages]}
+
+    this.wSocket.send(JSON.stringify(objNewChat))
+     /*const newMessages = { messages: [objNewChat, ...this.state.messages]}
     this.setState(newMessages);
-    console.log(`-----this.state.messages:  ${this.state.messages}`);
-  
-    /* 
-      tasks.push(newTask);
-      return newObjChat({ ...newTask }); */
-  };
-  
+    console.log(`-----this.state.messages:  ${this.state.messages}`); 
+  */
+  };  
 
   componentDidMount() {
     console.log("componentDidMount <App />");
@@ -55,10 +55,26 @@ class App extends Component {
       // Calling setState will trigger a call to render() in App and all child components.
       this.setState({ messages: messages });
     }, 3000);
+
+    
+    
+    console.log('wss')
+    this.wSocket.onopen = (event) => {
+      //@@@ mettre
+      console.log('* client connected *')
+      //@@@ quoi
+      //this.wSocket.send("Here's some text that the server is urgently awaiting!"); 
+    };
+    //when event recive message 
+    this.wSocket.onmessage = (event) => {
+      console.log('merci pour le message ! ')
+
+      //send the message
+      this.wSocket.send('yoooooooooooooo')
+    }
   }
 
   render() {
-    //this.addMessage("patate", "chose que");
     return (
       <div>
         <nav className="navbar">

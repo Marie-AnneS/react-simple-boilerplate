@@ -18,7 +18,7 @@ class ChatBar extends Component {
           console.log('enter',event.target.value)
           console.log(`this.props.username:  ${this.props.username}`)
           const content = event.target.value;
-          this.props.addMessage(this.props.username, content)
+          this.props.addMessage(content)
           this.setState({content: ''});
       }
   }
