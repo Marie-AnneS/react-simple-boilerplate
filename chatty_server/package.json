@@ -1,0 +1,23 @@
+{
+  "name": "chatty_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Marie-AnneS/react-simple-boilerplate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marie-AnneS/react-simple-boilerplate/issues"
+  },
+  "homepage": "https://github.com/Marie-AnneS/react-simple-boilerplate#readme",
+  "dependencies": {
+    "express": "4.17.1",
+    "ws": "7.0.0"
+  }
+}
