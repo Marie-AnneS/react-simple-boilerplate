@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: { name: "Bob" }, // optional. if currentUser is not defined, it means the user is Anonymous
+      userCount: 0,
+      currentUser: { name: "rob" }, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
         {
           id: "2fa602f2-f806-4e7d-bea0-e24f0321cb67",
@@ -36,24 +37,26 @@ class App extends Component {
     };
 
     this.wSocket.send(JSON.stringify(objPostMessage));
-    /*const newMessages = { messages: [objNewChat, ...this.state.messages]}
-    this.setState(newMessages);
-    console.log(`-----this.state.messages:  ${this.state.messages}`); 
-  */
   };
 
-  addUser = (newName) => {
+  /*   addUser = (newName) => {
     const newCurrentUser = Object.assign({}, this.state.currentUser);
     newCurrentUser.name = newName;
     this.setState({ currentUser: newCurrentUser });
-  };
+  }; */
 
-  postUser = (username, newName) => {
+  postUser = (oldName, newName) => {
     const objPostNotification = {
       type: "postNotification",
       username: newName,
-      content: `${username} has changed their name to ${newName}.`
+      content: `${oldName} has changed their name to ${newName}.`
     };
+
+    const newCurrentUser = Object.assign({}, this.state.currentUser);
+    newCurrentUser.name = newName;
+    this.setState({ currentUser: newCurrentUser });
+    // this.setState({currentUser : {name: newName}})
+
     this.wSocket.send(JSON.stringify(objPostNotification));
   };
 
@@ -68,42 +71,32 @@ class App extends Component {
         content: "Hello there!"
       };
       const messages = this.state.messages.concat(newMessage);
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
       this.setState({ messages: messages });
     }, 3000);
 
     console.log("wss");
     this.wSocket.onopen = event => {
-      //@@@ mettre
       console.log("* client connected *");
-      //@@@ quoi
-      //this.wSocket.send("Here's some text that the server is urgently awaiting!");
+
     };
 
     //when event recive message
     this.wSocket.onmessage = event => {
-      /* console.log("merci pour le message ! ");
-      const msg = JSON.parse(event.data);
-      console.log(`-------${msg}`);
-
-      const newMessages = { messages: [msg, ...this.state.messages] };
-      this.setState(newMessages);
-      //send the message
-      //this.wSocket.send('yoooooooooooooo') */
-      //console.log(`event.data------ ${event.data}`);
       const dataObj = JSON.parse(event.data);
-      //console.log(`data------ ${dataObj}`);
+      let newMessages;
       switch (dataObj.type) {
         case "incomingMessage":
-          const newMessages = { messages: [dataObj, ...this.state.messages] };
+          newMessages = { messages: [dataObj, ...this.state.messages] };
           this.setState(newMessages);
           break;
         case "incomingNotification":
-          // handle incoming notification
+          newMessages = { messages: [dataObj, ...this.state.messages] };
+          this.setState(newMessages);
+          break;
+        case "postNewsUser":
+          this.setState({userCount: dataObj.nbClient});
           break;
         default:
-          // show an error in the console if the message type is unknown
           throw new Error("Unknown event type " + dataObj.type);
       }
     };
@@ -116,6 +109,7 @@ class App extends Component {
           <a href="/" className="navbar-brand">
             Chatty
           </a>
+          <span>{this.state.userCount} Users online</span>
         </nav>
         <h1>Hello React :)</h1>
         <main className="messages">

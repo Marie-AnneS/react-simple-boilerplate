@@ -1,19 +1,20 @@
 import React from "react";
 import Message from "./Message.jsx";
+import Notif from "./Notif.jsx";
 
 const MessageList = props => {
 
-  //console.log(props);
-  const messagesList = props.messages.map(messageObj => (
-    
-    <Message username={messageObj.username} content={messageObj.content} key={props.messages.indexOf(messageObj)} />
-  ));
+  const messagesList = props.messages.map(messageObj => {
+    if (messageObj.type === 'incomingNotification') {
+      return <Notif content={messageObj.content } key={messageObj.id}/>;
+    } else {
+      return <Message username={messageObj.username} content={messageObj.content} key={messageObj.id} />
+    }
+  });
 
   return (
     <main className="messages">
-      {messagesList}
-      
-      {/* <div class="message system">Anonymous1 changed their name to nomnom.</div> */}
+      {messagesList} 
     </main>
   );
 };

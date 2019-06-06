@@ -1,7 +1,10 @@
 
 .navbar {
+  align-items: center;
   background: tomato;
   border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
   height: 60px;
   left: 0;
   padding: 0 10px;

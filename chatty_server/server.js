@@ -10,43 +10,50 @@ const PORT = 3001;
 const server = express()
   // Make the express server serve static assets (html, javascript, css) from the /public folder
   .use(express.static("public"))
-  .listen(PORT, "0.0.0.0", "localhost", () =>
-    console.log(`Listening on ${PORT}`)
-  );
+  .listen(PORT, "0.0.0.0", "localhost", () => console.log(`Listening on ${PORT}`));
 
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
+wss.broadcast = function broadcast(data) {
+  wss.clients.forEach(function each(client) {
+    client.send(data);
+  });
+};
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
-wss.on("connection", ws => {
-  console.log("Client connected");
+wss.on("connection", wsClient => {
+  console.log("Client connected - total clients :", wss.clients.size);
+  const nbClient = wss.clients.size;
 
-  ws.on("message", message => {
-    /* const test = this.message.content
-    console.log(test) */
-    const msg = JSON.parse(message);
+  wss.broadcast(
+    JSON.stringify({
+      type: "postNewsUser",
+      nbClient: nbClient
+    })
+  );
+
+  wsClient.on("message", message => {
+    const msg = JSON.parse(message)
+    msg.id = uuidv4();
+
     switch (msg.type) {
-      case "postMessage": 
-      //change type and adding a id       
+      case "postMessage":
         msg.type = "incomingMessage";
-        msg.id = uuidv4();
+
         break;
       case "postNotification":
-        // handle incoming notification
-        //console.log('yoooooooooooooooooooooooooooo')
+        msg.type = "incomingNotification";
         break;
-      default:
-        // show an error in the console if the message type is unknown
-        throw new Error("Unknown event type " + messageObj.type);
-    }
 
-    wss.clients.forEach(function each(client) {
-      client.send(JSON.stringify(msg));
-    });
+      default:
+        throw new Error("Unknown event type " + msg.type);
+    }
+    wss.broadcast(JSON.stringify(msg));
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on("close", () => console.log("Client disconnected"));
+  wsClient.on("close", () => console.log("Client disconnected"));
 });
