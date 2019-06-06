@@ -30,6 +30,7 @@ class App extends Component {
 
   addMessage = (username, content) => {
     const objNewChat = {
+      type: 'postMessage',
       username: this.state.currentUser.name,
       content: content
     };
@@ -81,11 +82,12 @@ class App extends Component {
       this.setState(newMessages);
       //send the message
       //this.wSocket.send('yoooooooooooooo') */
-
-      const data = JSON.parse(event.data);
-      switch (data.type) {
+      console.log(`event.data------ ${event.data}`);
+      const dataObj = JSON.parse(event.data);
+      console.log(`data------ ${dataObj}`);
+      switch (dataObj.type) {
         case "incomingMessage":
-          const newMessages = { messages: [msg, ...this.state.messages] };
+          const newMessages = { messages: [dataObj, ...this.state.messages] };
           this.setState(newMessages);
           break;
         case "incomingNotification":
@@ -93,7 +95,7 @@ class App extends Component {
           break;
         default:
           // show an error in the console if the message type is unknown
-          throw new Error("Unknown event type " + data.type);
+          throw new Error("Unknown event type " + dataObj.type);
       }
     };
   }
