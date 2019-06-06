@@ -11,11 +11,12 @@ class App extends Component {
       currentUser: { name: "Bob" }, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
         {
-          
+          id: "2fa602f2-f806-4e7d-bea0-e24f0321cb67",
           username: "Bob",
           content: "Has anyone seen my marbles?"
         },
         {
+          id: "b31184f2-3f23-4488-9832-cbe4761d6ffc",
           username: "Anonymous",
           content:
             "No, I think you lost them. You lost your marbles Bob. You lost them for good."
@@ -24,21 +25,27 @@ class App extends Component {
     };
   }
 
-//listen connection with server
+  //listen connection with server
   wSocket = new WebSocket("ws://localhost:3001");
 
-  addMessage = (content) => {
+  addMessage = (username, content) => {
     const objNewChat = {
       username: this.state.currentUser.name,
       content: content
-    }; 
+    };
 
-    this.wSocket.send(JSON.stringify(objNewChat))
-     /*const newMessages = { messages: [objNewChat, ...this.state.messages]}
+    this.wSocket.send(JSON.stringify(objNewChat));
+    /*const newMessages = { messages: [objNewChat, ...this.state.messages]}
     this.setState(newMessages);
     console.log(`-----this.state.messages:  ${this.state.messages}`); 
   */
-  };  
+  };
+
+  addUser = newName => {
+    const newCurrentUser = Object.assign({}, this.state.currentUser);
+    newCurrentUser.name = newName;
+    this.setState({ currentUser: newCurrentUser });
+  };
 
   componentDidMount() {
     console.log("componentDidMount <App />");
@@ -56,22 +63,39 @@ class App extends Component {
       this.setState({ messages: messages });
     }, 3000);
 
-    
-    
-    console.log('wss')
-    this.wSocket.onopen = (event) => {
+    console.log("wss");
+    this.wSocket.onopen = event => {
       //@@@ mettre
-      console.log('* client connected *')
+      console.log("* client connected *");
       //@@@ quoi
-      //this.wSocket.send("Here's some text that the server is urgently awaiting!"); 
+      //this.wSocket.send("Here's some text that the server is urgently awaiting!");
     };
-    //when event recive message 
-    this.wSocket.onmessage = (event) => {
-      console.log('merci pour le message ! ')
 
+    //when event recive message
+    this.wSocket.onmessage = event => {
+      /* console.log("merci pour le message ! ");
+      const msg = JSON.parse(event.data);
+      console.log(`-------${msg}`);
+
+      const newMessages = { messages: [msg, ...this.state.messages] };
+      this.setState(newMessages);
       //send the message
-      this.wSocket.send('yoooooooooooooo')
-    }
+      //this.wSocket.send('yoooooooooooooo') */
+
+      const data = JSON.parse(event.data);
+      switch (data.type) {
+        case "incomingMessage":
+          const newMessages = { messages: [msg, ...this.state.messages] };
+          this.setState(newMessages);
+          break;
+        case "incomingNotification":
+          // handle incoming notification
+          break;
+        default:
+          // show an error in the console if the message type is unknown
+          throw new Error("Unknown event type " + data.type);
+      }
+    };
   }
 
   render() {
@@ -87,7 +111,11 @@ class App extends Component {
           <MessageList messages={this.state.messages} />
         </main>
 
-        <ChatBar username={this.state.currentUser.name} addMessage={this.addMessage} />
+        <ChatBar
+          username={this.state.currentUser.name}
+          addMessage={this.addMessage}
+          addUser={this.addUser}
+        />
       </div>
     );
   }

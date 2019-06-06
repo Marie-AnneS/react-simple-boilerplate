@@ -8,6 +8,10 @@ class ChatBar extends Component {
     };
   }
 
+  handleUsernameChange = event =>{
+    this.props.addUser(event.target.value)
+  }
+
   handleInput = event => {
     event.preventDefault();
     this.setState({ content: event.target.value });
@@ -18,7 +22,7 @@ class ChatBar extends Component {
           console.log('enter',event.target.value)
           console.log(`this.props.username:  ${this.props.username}`)
           const content = event.target.value;
-          this.props.addMessage(content)
+          this.props.addMessage(this.props.username, content)
           this.setState({content: ''});
       }
   }
@@ -29,7 +33,7 @@ class ChatBar extends Component {
         <input
           className="chatbar-username"
           placeholder={this.props.username}
-          
+          onChange={this.handleUsernameChange}
         />
         <input
           className="chatbar-message"
