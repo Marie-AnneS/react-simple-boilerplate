@@ -27,25 +27,34 @@ class App extends Component {
 
   //listen connection with server
   wSocket = new WebSocket("ws://localhost:3001");
-
+  //@@@ enleve le username
   addMessage = (username, content) => {
-    const objNewChat = {
-      type: 'postMessage',
+    const objPostMessage = {
+      type: "postMessage",
       username: this.state.currentUser.name,
       content: content
     };
 
-    this.wSocket.send(JSON.stringify(objNewChat));
+    this.wSocket.send(JSON.stringify(objPostMessage));
     /*const newMessages = { messages: [objNewChat, ...this.state.messages]}
     this.setState(newMessages);
     console.log(`-----this.state.messages:  ${this.state.messages}`); 
   */
   };
 
-  addUser = newName => {
+  addUser = (newName) => {
     const newCurrentUser = Object.assign({}, this.state.currentUser);
     newCurrentUser.name = newName;
     this.setState({ currentUser: newCurrentUser });
+  };
+
+  postUser = (username, newName) => {
+    const objPostNotification = {
+      type: "postNotification",
+      username: newName,
+      content: `${username} has changed their name to ${newName}.`
+    };
+    this.wSocket.send(JSON.stringify(objPostNotification));
   };
 
   componentDidMount() {
@@ -82,9 +91,9 @@ class App extends Component {
       this.setState(newMessages);
       //send the message
       //this.wSocket.send('yoooooooooooooo') */
-      console.log(`event.data------ ${event.data}`);
+      //console.log(`event.data------ ${event.data}`);
       const dataObj = JSON.parse(event.data);
-      console.log(`data------ ${dataObj}`);
+      //console.log(`data------ ${dataObj}`);
       switch (dataObj.type) {
         case "incomingMessage":
           const newMessages = { messages: [dataObj, ...this.state.messages] };
@@ -117,6 +126,7 @@ class App extends Component {
           username={this.state.currentUser.name}
           addMessage={this.addMessage}
           addUser={this.addUser}
+          postUser={this.postUser}
         />
       </div>
     );

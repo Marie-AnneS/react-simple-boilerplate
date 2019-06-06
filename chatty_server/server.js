@@ -28,13 +28,14 @@ wss.on("connection", ws => {
     console.log(test) */
     const msg = JSON.parse(message);
     switch (msg.type) {
-      case "postMessage":
-        
+      case "postMessage": 
+      //change type and adding a id       
         msg.type = "incomingMessage";
         msg.id = uuidv4();
         break;
       case "postNotification":
         // handle incoming notification
+        //console.log('yoooooooooooooooooooooooooooo')
         break;
       default:
         // show an error in the console if the message type is unknown
