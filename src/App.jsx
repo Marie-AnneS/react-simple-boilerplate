@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MessageList from "./MessageList.jsx";
 import ChatBar from "./ChatBar.jsx";
+import Navbar from "./Navbar.jsx";
 
 class App extends Component {
   constructor(props) {
@@ -24,9 +25,7 @@ class App extends Component {
     };
   }
 
-  //listen connection with server
   wSocket = new WebSocket("ws://localhost:3001");
-  //@@@ enleve le username
   addMessage = (username, content) => {
     const objPostMessage = {
       type: "postMessage",
@@ -44,11 +43,7 @@ class App extends Component {
       content: `${oldName} has changed their name to ${newName}.`
     };
 
-    const newCurrentUser = Object.assign({}, this.state.currentUser);
-    newCurrentUser.name = newName;
-    this.setState({ currentUser: newCurrentUser });
-    // this.setState({currentUser : {name: newName}})
-
+    this.setState({ currentUser: { name: newName } });
     this.wSocket.send(JSON.stringify(objPostNotification));
   };
 
@@ -66,13 +61,10 @@ class App extends Component {
       this.setState({ messages: messages });
     }, 3000);
 
-    console.log("wss");
     this.wSocket.onopen = event => {
       console.log("* client connected *");
-
     };
 
-    //when event recive message
     this.wSocket.onmessage = event => {
       const dataObj = JSON.parse(event.data);
       let newMessages;
@@ -86,8 +78,7 @@ class App extends Component {
           this.setState(newMessages);
           break;
         case "postNbUser":
-          this.setState({userCount: dataObj.nbClient});
-          console.log('Coucuocu')
+          this.setState({ userCount: dataObj.nbClient });
           break;
         default:
           throw new Error("Unknown event type " + dataObj.type);
@@ -98,14 +89,8 @@ class App extends Component {
   render() {
     return (
       <div className="flex-content">
-        <nav className="navbar">
-          <a href="/" className="navbar-brand" target="_blank">
-            Chatty
-          </a>
-          <span>{this.state.userCount} Users online</span>
-        </nav>
-          <MessageList messages={this.state.messages} />
-        
+        <Navbar userCount={this.state.userCount} />
+        <MessageList messages={this.state.messages} />
 
         <ChatBar
           username={this.state.currentUser.name}

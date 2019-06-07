@@ -1,5 +1,3 @@
-// server.js
-
 const express = require("express");
 const SocketServer = require("ws").Server;
 const uuidv4 = require("uuid/v4");
@@ -47,7 +45,6 @@ wsServer.on("connection", wsClient => {
     wsServer.broadcast(JSON.stringify(getObj));
   });
 
-  //@@@ make function for repetiotion
   wsClient.on("close", () => {
     nbClient = wsServer.clients.size;
     console.log("Client disconnected - total clients :", wsServer.clients.size)

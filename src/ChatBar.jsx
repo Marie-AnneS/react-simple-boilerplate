@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-/* import PropTypes from 'prop-types'; */
 
 class ChatBar extends Component {
   constructor(props) {
@@ -18,7 +17,7 @@ class ChatBar extends Component {
     event.preventDefault();
     this.setState({ content: event.target.value });
   };
-//@@@ refacto voir si peu envoye des props a place
+  
   handleKeyDown = event => {
     const oldUser= this.props.username;
     const newUserName = this.state.username;
@@ -26,13 +25,12 @@ class ChatBar extends Component {
       const content = event.target.value;      
       if (oldUser !== newUserName){
         this.props.postUser(oldUser, newUserName);
-      }      
+      }     
       this.props.addMessage(this.state.username, content);
       this.setState({ content: "" });
 
     } else if (event.keyCode === 13 && event.target.name === "userForm") {           
-      this.props.postUser(oldUser, newUserName);     
-
+      this.props.postUser(oldUser, newUserName);  
     }
   };
 
@@ -58,9 +56,5 @@ class ChatBar extends Component {
     );
   }
 }
-
-/* ChatBar.propTypes = {
-    
-}; */
 
 export default ChatBar;
