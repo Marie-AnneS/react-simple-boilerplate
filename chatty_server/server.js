@@ -13,22 +13,19 @@ const server = express()
   .listen(PORT, "0.0.0.0", "localhost", () => console.log(`Listening on ${PORT}`));
 
 // Create the WebSockets server
-const wss = new SocketServer({ server });
+const ws = new SocketServer({ server });
 
-wss.broadcast = function broadcast(data) {
-  wss.clients.forEach(function each(client) {
+ws.broadcast = function broadcast(data) {
+  ws.clients.forEach(function each(client) {
     client.send(data);
   });
 };
 
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
-wss.on("connection", wsClient => {
-  console.log("Client connected - total clients :", wss.clients.size);
-  const nbClient = wss.clients.size;
+ws.on("connection", wsClient => {
+  console.log("Client connected - total clients :", ws.clients.size);
+  const nbClient = ws.clients.size;
 
-  wss.broadcast(
+  ws.broadcast(
     JSON.stringify({
       type: "postNewsUser",
       nbClient: nbClient
@@ -51,7 +48,7 @@ wss.on("connection", wsClient => {
       default:
         throw new Error("Unknown event type " + msg.type);
     }
-    wss.broadcast(JSON.stringify(msg));
+    ws.broadcast(JSON.stringify(msg));
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.

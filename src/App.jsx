@@ -2,14 +2,12 @@ import React, { Component } from "react";
 import MessageList from "./MessageList.jsx";
 import ChatBar from "./ChatBar.jsx";
 
-/* var rand = require("random-key"); */
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userCount: 0,
-      currentUser: { name: "rob" }, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: { name: "" }, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
         {
           id: "2fa602f2-f806-4e7d-bea0-e24f0321cb67",
