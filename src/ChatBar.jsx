@@ -5,11 +5,14 @@ class ChatBar extends Component {
   constructor(props) {
     super();
     this.state = {
-      username: props.username,
+      username: 'Anonymous',
       content: ""
     };
   }
 
+  handleUsernameChange = event =>{
+    this.setState({ username: event.target.value });
+  }
 
   handleInput = event => {
     event.preventDefault();
@@ -17,17 +20,18 @@ class ChatBar extends Component {
   };
 //@@@ refacto voir si peu envoye des props a place
   handleKeyDown = event => {
+    const oldUser= this.props.username;
+    const newUserName = this.state.username;
     if (event.keyCode === 13 && event.target.name === "nameForm") {
-      const content = event.target.value;
-      this.props.addMessage(this.props.username, content);
+      const content = event.target.value;      
+      if (oldUser !== newUserName){
+        this.props.postUser(oldUser, newUserName);
+      }      
+      this.props.addMessage(this.state.username, content);
       this.setState({ content: "" });
 
-    } else if (event.keyCode === 13 && event.target.name === "userForm") {
-      const newUserName = event.target.value;
-      const oldUser= this.props.username;
-      this.props.postUser(oldUser, newUserName);
-      
-      console.log(`oldUsername: ${oldUser}, new username: ${newUserName}`)
+    } else if (event.keyCode === 13 && event.target.name === "userForm") {           
+      this.props.postUser(oldUser, newUserName);     
 
     }
   };
@@ -38,6 +42,7 @@ class ChatBar extends Component {
         <input
           className="chatbar-username"
           placeholder={this.props.username}
+          onChange={this.handleUsernameChange}
           onKeyDown={this.handleKeyDown}
           name="userForm"
         />

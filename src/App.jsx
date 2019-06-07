@@ -7,7 +7,7 @@ class App extends Component {
     super(props);
     this.state = {
       userCount: 0,
-      currentUser: { name: "" }, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: { name: "Anonymous" },
       messages: [
         {
           id: "2fa602f2-f806-4e7d-bea0-e24f0321cb67",
@@ -30,18 +30,12 @@ class App extends Component {
   addMessage = (username, content) => {
     const objPostMessage = {
       type: "postMessage",
-      username: this.state.currentUser.name,
+      username: username,
       content: content
     };
 
     this.wSocket.send(JSON.stringify(objPostMessage));
   };
-
-  /*   addUser = (newName) => {
-    const newCurrentUser = Object.assign({}, this.state.currentUser);
-    newCurrentUser.name = newName;
-    this.setState({ currentUser: newCurrentUser });
-  }; */
 
   postUser = (oldName, newName) => {
     const objPostNotification = {
@@ -91,8 +85,9 @@ class App extends Component {
           newMessages = { messages: [dataObj, ...this.state.messages] };
           this.setState(newMessages);
           break;
-        case "postNewsUser":
+        case "postNbUser":
           this.setState({userCount: dataObj.nbClient});
+          console.log('Coucuocu')
           break;
         default:
           throw new Error("Unknown event type " + dataObj.type);
