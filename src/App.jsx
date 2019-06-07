@@ -78,11 +78,11 @@ class App extends Component {
       let newMessages;
       switch (dataObj.type) {
         case "incomingMessage":
-          newMessages = { messages: [dataObj, ...this.state.messages] };
+          newMessages = { messages: [...this.state.messages, dataObj] };
           this.setState(newMessages);
           break;
         case "incomingNotification":
-          newMessages = { messages: [dataObj, ...this.state.messages] };
+          newMessages = { messages: [...this.state.messages, dataObj] };
           this.setState(newMessages);
           break;
         case "postNbUser":
@@ -97,17 +97,15 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="flex-content">
         <nav className="navbar">
-          <a href="/" className="navbar-brand">
+          <a href="/" className="navbar-brand" target="_blank">
             Chatty
           </a>
           <span>{this.state.userCount} Users online</span>
         </nav>
-        <h1>Hello React :)</h1>
-        <main className="messages">
           <MessageList messages={this.state.messages} />
-        </main>
+        
 
         <ChatBar
           username={this.state.currentUser.name}

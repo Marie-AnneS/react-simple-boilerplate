@@ -1,27 +1,38 @@
+.message {
+  display: flex;
+  padding: 5px;
+  margin: 0.4em 1em;
+}
 
-    .message {
-        display: flex;
-        padding: 5px;
-      }
-  
-      .message.system {
-        font-style: italic;
-        padding: 5px 20px;
-      }
-  
-      .message-content,
-      .message-username {
-        overflow: hidden;
-        margin: 5px;
-        padding: 0 10px;
-      }
-  
-      .message-content {
-        flex: 8;
-      }
-  
-      .message-username {
-        flex: 2;
-        font-weight: 700;
-      }
-  
+.message.system {
+  font-style: italic;
+  padding: 5px 20px;
+}
+
+.message-content,
+.message-username {
+  overflow: hidden;
+  margin: 5px;
+  padding: 0 10px;
+}
+
+.message-content {
+  flex: 8;
+  border-radius: 0 $radius $radius $radius;
+  border: 1px solid #000;
+  box-shadow: 4px 4px;
+  padding: 1em;
+}
+
+.message-username {
+  padding-left: 1em;
+  display: flex;
+  font-weight: 700;
+  justify-content: flex-end;
+}
+
+.notification {
+  text-align: center;
+  padding: 1em;
+  margin: 1em;
+}

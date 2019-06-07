@@ -1,11 +1,37 @@
 body {
-  background: white;
+  background: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTAwIDEwMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIGQ9Ik00My4yLDM4LjljMS4xLTAuMiwzLjYtMC4zLDQuNywwTDQ3LjYsNDRjMCwwLDAsMCwwLDBjMCwwLDAsMCwwLDBsMCwxLjVjMCwxLjIsMC4xLDIuMSwwLjMsM2MwLjQsMS41LDEuMSwyLjksMiw0LjIgICBjMSwxLjQsMS41LDMuMiwxLjMsNWMwLDAsMCwwLDAsMGMwLDAuMi0wLjEsMC41LTAuMSwwLjdjLTAuMSwwLjcsMC4zLDEuMywxLDEuNWMwLjEsMCwwLjIsMCwwLjMsMGMwLjYsMCwxLjEtMC40LDEuMi0xICAgYzAuMS0wLjMsMC4yLTAuOCwwLjItMWMwLDAsMCwwLDAsMGMwLjItMi40LTAuNC00LjctMS44LTYuN2MtMC43LTEtMS4zLTIuMS0xLjYtMy4zYy0wLjItMC43LTAuMy0xLjQtMC4zLTIuNGwwLTEuNWwwLjUtOC44ICAgYzAtMC42LTAuNC0xLjItMS0xLjNjLTAuNi0wLjEtMS4yLDAuMi0xLjQsMC44bC0wLjUsMS41Yy0xLjMtMC4yLTIuOS0wLjItNC4yLDBsLTAuNS0xLjVjLTAuMi0wLjYtMC44LTAuOS0xLjQtMC44ICAgYy0wLjYsMC4xLTEsMC43LTEsMS4zbDAuNCw3LjRjMC4xLDAuOSwwLjEsMS45LDAuMSwyLjl2MS4xYy0wLjIsMS43LTAuOCwzLjQtMS44LDQuOGMtMS40LDEuOS0yLDQuMy0xLjgsNi43ICAgYzAuMSwxLjQsMC42LDIuNywxLjMsMy45YzAuNCwwLjcsMC45LDEuMiwxLjUsMS43YzAuMiwwLjIsMC41LDAuMywwLjgsMC4zYzAuNCwwLDAuNy0wLjIsMS0wLjVjMC40LTAuNSwwLjMtMS4zLTAuMi0xLjggICBjLTAuNC0wLjMtMC43LTAuNi0wLjktMWMtMC41LTAuOS0wLjktMS45LTEtMi45Yy0wLjItMS44LDAuMy0zLjUsMS4zLTVjMS4zLTEuOCwyLjEtMy45LDIuMy02YzAsMCwwLTAuMSwwLTAuMXYtMS4xYzAtMSwwLTItMC4xLTMgICBMNDMuMiwzOC45eiI+PC9wYXRoPjxwYXRoIGQ9Ik01OS40LDQ0LjNjLTEuOCwwLTMuMywxLjQtMy4zLDMuMnYxMS43YzAsMi40LTIuMSw0LjMtNC42LDQuM2MtMi42LDAtNC42LTEuOS00LjYtNC4zYzAtMC43LTAuNi0xLjMtMS4zLTEuMyAgIHMtMS4zLDAuNi0xLjMsMS4zYzAsMy43LDMuMiw2LjgsNy4xLDYuOGMzLjksMCw3LjEtMyw3LjEtNi44VjQ3LjVjMC0wLjQsMC40LTAuNywwLjgtMC43czAuOCwwLjMsMC44LDAuN3YyLjkgICBjMCwwLjcsMC42LDEuMywxLjMsMS4zczEuMy0wLjYsMS4zLTEuM3YtMi45QzYyLjcsNDUuOCw2MS4yLDQ0LjMsNTkuNCw0NC4zeiI+PC9wYXRoPjwvZz48L3N2Zz4=");
+  border: 1px solid #000;
+  box-shadow: 10px 10px;
   color: black;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
-  margin: 70px 0;
+  font-family: $typo-style;
+  font-size: 16px;
+  margin: 5em auto;
+  max-width: 600px;
+  margin: 2em auto;
+  background-size: 80px;
+  background-color: #ffe833;
 }
 
 h1 {
   color: tomato;
+}
+
+.flex-content{
+  background: #fff;
+	display: flex;
+  flex-direction: column;
+  height: 91vh;
+  min-height: 100%;
+  
+  .navbar{
+    height: 60px;
+  }
+  .messages{
+    padding-top: .5em;
+    flex: 1;
+    overflow-y: auto;
+  }
+  .chatbar{
+    height: 60px;
+  }
 }

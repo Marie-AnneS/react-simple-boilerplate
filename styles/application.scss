@@ -1,4 +1,9 @@
 // This is the top-level scss file. Import all other files in here.
+//Variable
+//
+$typo-style: 'Quicksand', sans-serif;
+$radius: 20px;
+
 @import 'global';
 
 @import './modules/_nav.scss';
